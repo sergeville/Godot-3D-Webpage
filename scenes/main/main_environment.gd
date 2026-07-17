@@ -5,19 +5,26 @@ extends Node3D
 ## and reveals engineering callouts.
 
 const BLUEPRINT_MAT := preload("res://materials/blueprint.tres")
+const FLY_DURATION := 0.8
 
 @onready var ui_overlay: CanvasLayer = $UiOverlay
 @onready var world_env: WorldEnvironment = $WorldEnvironment
 @onready var callouts: Node3D = $BlueprintCallouts
+@onready var camera: Camera3D = $Camera3D
 
 var _blueprint_on := false
 var _normal_env: Environment
 var _blueprint_env: Environment
+var _home_cam: Transform3D
+var _cam_tween: Tween
 
 
 func _ready() -> void:
+	_home_cam = camera.transform
 	for anchor in get_tree().get_nodes_in_group("interactive_anchors"):
 		anchor.anchor_clicked.connect(ui_overlay.show_panel)
+		anchor.anchor_clicked.connect(_fly_to.bind(anchor))
+	ui_overlay.panel_closed.connect(_fly_home)
 	_normal_env = world_env.environment
 	_blueprint_env = Environment.new()
 	_blueprint_env.background_mode = Environment.BG_COLOR
@@ -49,3 +56,24 @@ func _set_blueprint(on: bool) -> void:
 func _set_motion(on: bool) -> void:
 	for node in get_tree().get_nodes_in_group("idle_motion"):
 		node.set_process(on)
+
+
+## Tween the camera in to frame the clicked anchor's item. The look target
+## is nudged right so the object settles in the left half of the frame,
+## leaving room for the info panel docked on the right edge.
+func _fly_to(_anchor_id: String, anchor: Node3D) -> void:
+	var focus := anchor.global_position + Vector3(0, 1.15, 0)
+	var cam_pos := focus + Vector3(0.9, 0.35, 2.6)
+	var look_target := focus + Vector3(0.55, 0, 0)
+	_tween_camera(Transform3D(Basis.looking_at(look_target - cam_pos), cam_pos))
+
+
+func _fly_home() -> void:
+	_tween_camera(_home_cam)
+
+
+func _tween_camera(target: Transform3D) -> void:
+	if _cam_tween:
+		_cam_tween.kill()
+	_cam_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	_cam_tween.tween_property(camera, "transform", target, FLY_DURATION)

@@ -5,6 +5,7 @@ extends CanvasLayer
 
 signal blueprint_toggled(on: bool)
 signal motion_toggled(on: bool)
+signal panel_closed
 
 const PROJECTS := {
 	"workspace_hub": {
@@ -58,7 +59,7 @@ var _fps_accum := 0.0
 
 
 func _ready() -> void:
-	close_button.pressed.connect(info_panel.hide)
+	close_button.pressed.connect(_on_close_pressed)
 	github_button.pressed.connect(_open_github)
 	blueprint_chip.toggled.connect(func(on: bool) -> void: blueprint_toggled.emit(on))
 	motion_chip.toggled.connect(_on_motion_toggled)
@@ -91,6 +92,11 @@ func show_panel(anchor_id: String) -> void:
 	_current_url = project.get("url", "")
 	github_button.visible = _current_url != ""
 	info_panel.show()
+
+
+func _on_close_pressed() -> void:
+	info_panel.hide()
+	panel_closed.emit()
 
 
 func _open_github() -> void:
