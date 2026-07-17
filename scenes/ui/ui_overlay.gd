@@ -28,6 +28,11 @@ const PROJECTS := {
 		"desc": "The site you are looking at — built in Godot 4, exported to WebAssembly, and deployed to GitHub Pages by a GitHub Actions workflow.",
 		"url": "https://github.com/sergeville/Godot-3D-Webpage",
 	},
+	"synapse": {
+		"title": "Synapse",
+		"desc": "AI platform monorepo — multi-agent orchestration on Archon, knowledge graphs, live agent dashboards, and BMAD-driven workflows.",
+		"url": "https://github.com/sergeville/Synapse",
+	},
 	"hvac_buddy": {
 		"title": "HVAC Buddy",
 		"desc": "Welcome to my portfolio! I'm the site mascot, left over from this project's HVAC-demo days. Click a pedestal to explore a project — each one opens on GitHub.",
