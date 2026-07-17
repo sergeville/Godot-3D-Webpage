@@ -17,5 +17,6 @@ Brief written 2026-07-17. Godot project not yet created.
 
 ## Tracking
 
-- Archon: project "Godot 4 3D Webpage" (http://127.0.0.1:8181)
-- Linear: MoveToLinear team
+- Archon: project `78113f0a-9a33-4307-9cc9-c4d89d63345f` — "Godot 4 3D Webpage" (http://127.0.0.1:8181)
+- Linear: [Godot 4 3D Webpage](https://linear.app/movetolinear/project/godot-4-3d-webpage-d8dddec74516) (MoveToLinear team)
+- First task: Archon `8aeee5eb` ↔ [MOV-166](https://linear.app/movetolinear/issue/MOV-166/set-up-godot-4-project-per-technical-brief) — set up the Godot project per the brief
