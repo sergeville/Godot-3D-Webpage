@@ -17,7 +17,7 @@ Built for the browser from the ground up: Compatibility renderer (WebGL 2.0), no
 | Orange prism | [maverick-command-core](https://github.com/sergeville/maverick-command-core) — Ford Maverick diagnostic suite |
 | Rose sphere | [MomRecette](https://github.com/sergeville/MomRecette) — family recipes app (Swift) |
 | Blue ring | [Godot-3D-Webpage](https://github.com/sergeville/Godot-3D-Webpage) — this site |
-| Purple gem | [Synapse](https://github.com/sergeville/Synapse) — AI platform monorepo *(repo private until published)* |
+| Purple gem | [Synapse](https://github.com/sergeville/Synapse) — AI platform monorepo |
 
 ## Installation — step by step
 
