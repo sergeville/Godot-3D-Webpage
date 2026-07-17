@@ -5,6 +5,8 @@ extends Area3D
 
 signal anchor_clicked(anchor_id: String)
 
+const HOVER_OVERLAY := preload("res://materials/hover_overlay.tres")
+
 @export var anchor_id: String = "anchor"
 @export var external_url: String = ""
 
@@ -25,7 +27,14 @@ func _on_input_event(_camera: Node, event: InputEvent, _position: Vector3, _norm
 
 func _on_mouse_entered() -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+	_set_highlight(true)
 
 
 func _on_mouse_exited() -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+	_set_highlight(false)
+
+
+func _set_highlight(on: bool) -> void:
+	for mesh in find_children("*", "MeshInstance3D", true, false):
+		mesh.material_overlay = HOVER_OVERLAY if on else null

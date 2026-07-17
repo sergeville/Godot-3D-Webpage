@@ -25,6 +25,18 @@ theme_override_font_sizes/font_size = 28
 text = "HVAC 3D Showcase"
 horizontal_alignment = 1
 
+[node name="HintLabel" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 58.0
+offset_bottom = 82.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.78, 0.8, 0.85, 0.75)
+theme_override_font_sizes/font_size = 14
+text = "Click an object to learn about it"
+horizontal_alignment = 1
+
 [node name="InfoPanel" type="PanelContainer" parent="Root"]
 layout_mode = 1
 anchors_preset = 8

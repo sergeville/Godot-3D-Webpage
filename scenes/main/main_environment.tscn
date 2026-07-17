@@ -1,20 +1,35 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=36 format=3]
 
 [ext_resource type="Script" path="res://scenes/main/main_environment.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/interactive_anchor.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ui_overlay.tscn" id="3"]
 [ext_resource type="Script" path="res://scripts/idle_motion.gd" id="4"]
 
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.18, 0.22, 0.3, 1)
+sky_horizon_color = Color(0.42, 0.4, 0.38, 1)
+ground_bottom_color = Color(0.1, 0.1, 0.12, 1)
+ground_horizon_color = Color(0.42, 0.4, 0.38, 1)
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
 [sub_resource type="Environment" id="env"]
-background_mode = 1
-background_color = Color(0.13, 0.15, 0.19, 1)
-ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.6
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_energy = 0.7
+fog_enabled = true
+fog_light_color = Color(0.35, 0.36, 0.4, 1)
+fog_density = 0.025
 
 [sub_resource type="StandardMaterial3D" id="mat_concrete"]
 albedo_color = Color(0.45, 0.46, 0.48, 1)
 roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="mat_floor"]
+albedo_color = Color(0.3, 0.31, 0.34, 1)
+roughness = 0.85
 
 [sub_resource type="StandardMaterial3D" id="mat_unit"]
 albedo_color = Color(0.72, 0.7, 0.65, 1)
@@ -38,11 +53,22 @@ roughness = 0.3
 albedo_color = Color(0.45, 0.7, 0.9, 1)
 roughness = 0.5
 
+[sub_resource type="StandardMaterial3D" id="mat_screen"]
+albedo_color = Color(0.5, 0.8, 1, 1)
+emission_enabled = true
+emission = Color(0.4, 0.7, 1, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="StandardMaterial3D" id="mat_shadow"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 0.4)
+
 [sub_resource type="BoxMesh" id="mesh_floor"]
-size = Vector3(20, 0.2, 20)
+size = Vector3(40, 0.2, 40)
 
 [sub_resource type="BoxMesh" id="mesh_wall"]
-size = Vector3(20, 4, 0.2)
+size = Vector3(40, 6, 0.2)
 
 [sub_resource type="BoxMesh" id="mesh_unit"]
 size = Vector3(1.5, 1.5, 1.5)
@@ -55,6 +81,12 @@ height = 0.08
 [sub_resource type="BoxMesh" id="mesh_blade"]
 size = Vector3(1.1, 0.02, 0.14)
 
+[sub_resource type="BoxMesh" id="mesh_grille_front"]
+size = Vector3(1.3, 0.06, 0.03)
+
+[sub_resource type="BoxMesh" id="mesh_grille_side"]
+size = Vector3(0.03, 0.06, 1.3)
+
 [sub_resource type="BoxMesh" id="mesh_duct_h"]
 size = Vector3(0.6, 0.6, 6)
 
@@ -62,7 +94,10 @@ size = Vector3(0.6, 0.6, 6)
 size = Vector3(0.6, 2.8, 0.6)
 
 [sub_resource type="BoxMesh" id="mesh_thermo"]
-size = Vector3(0.4, 0.6, 0.08)
+size = Vector3(0.55, 0.8, 0.1)
+
+[sub_resource type="BoxMesh" id="mesh_screen"]
+size = Vector3(0.32, 0.28, 0.03)
 
 [sub_resource type="BoxMesh" id="mesh_buddy_body"]
 size = Vector3(0.9, 1, 0.7)
@@ -74,14 +109,24 @@ height = 0.14
 [sub_resource type="BoxMesh" id="mesh_mouth"]
 size = Vector3(0.5, 0.18, 0.04)
 
+[sub_resource type="CylinderMesh" id="mesh_shadow_lg"]
+top_radius = 1.15
+bottom_radius = 1.15
+height = 0.02
+
+[sub_resource type="CylinderMesh" id="mesh_shadow_sm"]
+top_radius = 0.62
+bottom_radius = 0.62
+height = 0.02
+
 [sub_resource type="BoxShape3D" id="shape_condenser"]
 size = Vector3(1.6, 1.8, 1.6)
 
 [sub_resource type="BoxShape3D" id="shape_thermo"]
-size = Vector3(0.5, 0.7, 0.3)
+size = Vector3(0.7, 0.9, 0.3)
 
 [sub_resource type="BoxShape3D" id="shape_buddy"]
-size = Vector3(1, 1.6, 0.8)
+size = Vector3(1, 1.3, 0.8)
 
 [node name="MainEnvironment" type="Node3D"]
 script = ExtResource("1")
@@ -93,16 +138,22 @@ environment = SubResource("env")
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4, 0)
 shadow_enabled = false
 
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.5, -0.433, 0.75, 0, 0.866, 0.5, -0.866, -0.25, 0.433, -4, 3, 2)
+light_color = Color(1, 0.95, 0.88, 1)
+light_energy = 0.4
+shadow_enabled = false
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 2, 5)
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 1.7, 3.8)
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 mesh = SubResource("mesh_floor")
-surface_material_override/0 = SubResource("mat_concrete")
+surface_material_override/0 = SubResource("mat_floor")
 
 [node name="BackWall" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5)
 mesh = SubResource("mesh_wall")
 surface_material_override/0 = SubResource("mat_concrete")
 
@@ -116,6 +167,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.4, -4.4)
 mesh = SubResource("mesh_duct_v")
 surface_material_override/0 = SubResource("mat_metal")
 
+[node name="CondenserShadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.02, -1)
+mesh = SubResource("mesh_shadow_lg")
+surface_material_override/0 = SubResource("mat_shadow")
+
+[node name="BuddyShadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 0.02, 0.8)
+mesh = SubResource("mesh_shadow_sm")
+surface_material_override/0 = SubResource("mat_shadow")
+
 [node name="CondenserAnchor" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, -1)
 script = ExtResource("2")
@@ -126,24 +187,54 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 mesh = SubResource("mesh_unit")
 surface_material_override/0 = SubResource("mat_unit")
 
+[node name="GrilleFront1" type="MeshInstance3D" parent="CondenserAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0.76)
+mesh = SubResource("mesh_grille_front")
+surface_material_override/0 = SubResource("mat_dark")
+
+[node name="GrilleFront2" type="MeshInstance3D" parent="CondenserAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72, 0.76)
+mesh = SubResource("mesh_grille_front")
+surface_material_override/0 = SubResource("mat_dark")
+
+[node name="GrilleFront3" type="MeshInstance3D" parent="CondenserAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99, 0.76)
+mesh = SubResource("mesh_grille_front")
+surface_material_override/0 = SubResource("mat_dark")
+
+[node name="GrilleSide1" type="MeshInstance3D" parent="CondenserAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.76, 0.45, 0)
+mesh = SubResource("mesh_grille_side")
+surface_material_override/0 = SubResource("mat_dark")
+
+[node name="GrilleSide2" type="MeshInstance3D" parent="CondenserAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.76, 0.72, 0)
+mesh = SubResource("mesh_grille_side")
+surface_material_override/0 = SubResource("mat_dark")
+
+[node name="GrilleSide3" type="MeshInstance3D" parent="CondenserAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.76, 0.99, 0)
+mesh = SubResource("mesh_grille_side")
+surface_material_override/0 = SubResource("mat_dark")
+
 [node name="Shroud" type="MeshInstance3D" parent="CondenserAnchor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54, 0)
 mesh = SubResource("mesh_shroud")
 surface_material_override/0 = SubResource("mat_dark")
 
 [node name="FanBlades" type="Node3D" parent="CondenserAnchor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66, 0)
 script = ExtResource("4")
 spin_degrees_per_second = 240.0
 
 [node name="BladeA" type="MeshInstance3D" parent="CondenserAnchor/FanBlades"]
 mesh = SubResource("mesh_blade")
-surface_material_override/0 = SubResource("mat_dark")
+surface_material_override/0 = SubResource("mat_metal")
 
 [node name="BladeB" type="MeshInstance3D" parent="CondenserAnchor/FanBlades"]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0, 0)
 mesh = SubResource("mesh_blade")
-surface_material_override/0 = SubResource("mat_dark")
+surface_material_override/0 = SubResource("mat_metal")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CondenserAnchor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -157,6 +248,11 @@ anchor_id = "thermostat"
 [node name="Body" type="MeshInstance3D" parent="ThermostatAnchor"]
 mesh = SubResource("mesh_thermo")
 surface_material_override/0 = SubResource("mat_white")
+
+[node name="Screen" type="MeshInstance3D" parent="ThermostatAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.05)
+mesh = SubResource("mesh_screen")
+surface_material_override/0 = SubResource("mat_screen")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ThermostatAnchor"]
 shape = SubResource("shape_thermo")
@@ -172,22 +268,22 @@ bob_amplitude = 0.06
 bob_speed = 2.5
 
 [node name="Body" type="MeshInstance3D" parent="BuddyAnchor/Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, 0)
 mesh = SubResource("mesh_buddy_body")
 surface_material_override/0 = SubResource("mat_blue")
 
 [node name="EyeL" type="MeshInstance3D" parent="BuddyAnchor/Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 1.02, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.84, 0.36)
 mesh = SubResource("mesh_eye")
 surface_material_override/0 = SubResource("mat_dark")
 
 [node name="EyeR" type="MeshInstance3D" parent="BuddyAnchor/Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 1.02, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.84, 0.36)
 mesh = SubResource("mesh_eye")
 surface_material_override/0 = SubResource("mat_dark")
 
 [node name="Mouth" type="MeshInstance3D" parent="BuddyAnchor/Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, 0.36)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0.36)
 mesh = SubResource("mesh_mouth")
 surface_material_override/0 = SubResource("mat_dark")
 
