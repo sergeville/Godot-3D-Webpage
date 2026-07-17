@@ -1,6 +1,10 @@
 extends CanvasLayer
 ## UI overlay: Control nodes anchored as a top layer over the 3D view.
-## Holds the project catalog — each pedestal's anchor_id keys into PROJECTS.
+## Holds the project catalog — each pedestal's anchor_id keys into PROJECTS —
+## plus the control chips (blueprint / motion) and the telemetry strip.
+
+signal blueprint_toggled(on: bool)
+signal motion_toggled(on: bool)
 
 const PROJECTS := {
 	"workspace_hub": {
@@ -45,14 +49,39 @@ const PROJECTS := {
 @onready var info_label: Label = $Root/InfoPanel/Margin/Column/InfoLabel
 @onready var github_button: Button = $Root/InfoPanel/Margin/Column/Buttons/GitHubButton
 @onready var close_button: Button = $Root/InfoPanel/Margin/Column/Buttons/CloseButton
+@onready var blueprint_chip: Button = $Root/Chips/BlueprintChip
+@onready var motion_chip: Button = $Root/Chips/MotionChip
+@onready var telemetry_label: Label = $Root/Telemetry
 
 var _current_url := ""
+var _fps_accum := 0.0
 
 
 func _ready() -> void:
 	close_button.pressed.connect(info_panel.hide)
 	github_button.pressed.connect(_open_github)
+	blueprint_chip.toggled.connect(func(on: bool) -> void: blueprint_toggled.emit(on))
+	motion_chip.toggled.connect(_on_motion_toggled)
 	info_panel.hide()
+
+
+func _process(delta: float) -> void:
+	_fps_accum += delta
+	if _fps_accum >= 0.5:
+		_fps_accum = 0.0
+		var v: Dictionary = Engine.get_version_info()
+		telemetry_label.text = "%d FPS · WEBGL2 · GODOT %s.%s" % [Engine.get_frames_per_second(), v.major, v.minor]
+
+
+## Reflect an externally driven blueprint state (e.g. the B key) on the chip
+## without re-emitting the toggled signal.
+func sync_blueprint_chip(on: bool) -> void:
+	blueprint_chip.set_pressed_no_signal(on)
+
+
+func _on_motion_toggled(on: bool) -> void:
+	motion_chip.text = "MOTION ON" if on else "MOTION OFF"
+	motion_toggled.emit(on)
 
 
 func show_panel(anchor_id: String) -> void:

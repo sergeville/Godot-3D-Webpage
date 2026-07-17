@@ -11,6 +11,7 @@ var _elapsed: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("idle_motion")
 	_base_y = position.y
 
 
