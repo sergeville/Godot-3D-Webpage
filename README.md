@@ -1,5 +1,7 @@
 # Godot 3D Webpage — Project Portfolio
 
+[![Serge Villeneuve — Project Portfolio: five project pedestals with HVAC Buddy](docs/screenshot.png)](https://sergeville.github.io/Godot-3D-Webpage/)
+
 **Live site: https://sergeville.github.io/Godot-3D-Webpage/**
 
 An interactive 3D portfolio built in Godot 4 and exported to WebAssembly. Five pedestals showcase my public GitHub projects — click one and an info panel opens with a **View on GitHub** button. HVAC Buddy, the site mascot, guides visitors; the condenser unit and duct run in the background are set dressing left over from the project's HVAC-demo days.
