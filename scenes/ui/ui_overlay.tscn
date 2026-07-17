@@ -22,7 +22,7 @@ offset_top = 16.0
 offset_bottom = 56.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 28
-text = "Godot 4 3D Webpage"
+text = "HVAC 3D Showcase"
 horizontal_alignment = 1
 
 [node name="InfoPanel" type="PanelContainer" parent="Root"]

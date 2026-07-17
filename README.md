@@ -1,12 +1,12 @@
-# Godot 4 3D Webpage
+# Godot 4 3D Webpage — HVAC 3D Showcase
 
-Interactive 3D webpage (portfolio-style site) built in Godot 4, exported to WebAssembly for the browser.
+Interactive 3D webpage built in Godot 4, exported to WebAssembly for the browser. Themed as an HVAC mechanical room: condenser unit with spinning fan, duct run, wall thermostat, and "HVAC Buddy" — a bobbing anthropomorphic AC-unit character. All three are clickable anchors that open info panels.
 
 **Start here:** [docs/TECHNICAL_BRIEF.md](docs/TECHNICAL_BRIEF.md) — the implementation contract. Renderer mode, scene architecture, browser interop, and export settings are all fixed there.
 
 ## Status
 
-Brief written 2026-07-17. Godot project not yet created.
+2026-07-17: skeleton built and verified headless on Godot 4.7.stable (Homebrew). Web export pending — export templates not yet installed.
 
 ## Key constraints (from the brief)
 
