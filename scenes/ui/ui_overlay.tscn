@@ -22,7 +22,7 @@ offset_top = 16.0
 offset_bottom = 56.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 28
-text = "HVAC 3D Showcase"
+text = "Serge Villeneuve — Project Portfolio"
 horizontal_alignment = 1
 
 [node name="HintLabel" type="Label" parent="Root"]
@@ -34,7 +34,7 @@ offset_bottom = 82.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.78, 0.8, 0.85, 0.75)
 theme_override_font_sizes/font_size = 14
-text = "Click an object to learn about it"
+text = "Click a pedestal to explore a project"
 horizontal_alignment = 1
 
 [node name="InfoPanel" type="PanelContainer" parent="Root"]
@@ -44,10 +44,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -180.0
-offset_top = -80.0
-offset_right = 180.0
-offset_bottom = 80.0
+offset_left = -220.0
+offset_top = -110.0
+offset_right = 220.0
+offset_bottom = 110.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -60,14 +60,30 @@ theme_override_constants/margin_bottom = 24
 
 [node name="Column" type="VBoxContainer" parent="Root/InfoPanel/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Root/InfoPanel/Margin/Column"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Project"
+horizontal_alignment = 1
 
 [node name="InfoLabel" type="Label" parent="Root/InfoPanel/Margin/Column"]
+custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 text = "Info panel"
 horizontal_alignment = 1
+autowrap_mode = 3
 
-[node name="CloseButton" type="Button" parent="Root/InfoPanel/Margin/Column"]
+[node name="Buttons" type="HBoxContainer" parent="Root/InfoPanel/Margin/Column"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/separation = 16
+
+[node name="GitHubButton" type="Button" parent="Root/InfoPanel/Margin/Column/Buttons"]
+layout_mode = 2
+text = "View on GitHub"
+
+[node name="CloseButton" type="Button" parent="Root/InfoPanel/Margin/Column/Buttons"]
+layout_mode = 2
 text = "Close"
